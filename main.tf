@@ -19,20 +19,39 @@ resource "aws_subnet" "private_subnet" {
   }
 }
 
-resource "aws_eip" "nat_instance" {
-  vpc = true
+data "aws_ami" "debian" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["debian-jessie-amd64-hvm-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["379101102735"] # Debian Project
 }
 
-resource "aws_nat_gateway" "nat_instance" {
-  allocation_id = "${aws_eip.nat_instance.id}"
-  subnet_id = "${aws_subnet.public_subnet.id}"
+resource "aws_instance" "nat_instance" {
+  ami           = "${data.aws_ami.debian.id}"
+  instance_type = "t2.micro"
+
+  associate_public_ip_address = true
+
+  tags {
+    Name = "${var.vpc_name}-${var.availability_zone}-NAT"
+  }
 }
+
 
 resource "aws_route_table" "private_subnet_route" {
   vpc_id = "${var.vpc_id}"
   route {
     cidr_block = "0.0.0.0/0"
-    nat_gateway_id = "${aws_nat_gateway.nat_instance.id}"
+    instance_id = "${aws_instance.nat_instance.id}"
   }
 
   tags {
