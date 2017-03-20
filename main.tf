@@ -39,6 +39,8 @@ resource "aws_instance" "nat_instance" {
   ami           = "${data.aws_ami.debian.id}"
   instance_type = "t2.micro"
 
+  subnet_id     = "${aws_subnet.public_subnet.id}"
+
   associate_public_ip_address = true
 
   tags {
@@ -48,7 +50,9 @@ resource "aws_instance" "nat_instance" {
 
 
 resource "aws_route_table" "private_subnet_route" {
+
   vpc_id = "${var.vpc_id}"
+
   route {
     cidr_block = "0.0.0.0/0"
     instance_id = "${aws_instance.nat_instance.id}"
