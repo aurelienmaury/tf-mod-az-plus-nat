@@ -42,12 +42,21 @@ resource "aws_instance" "nat_instance" {
   subnet_id     = "${aws_subnet.public_subnet.id}"
 
   associate_public_ip_address = true
+  key_name = "${aws_key_pair.nat_instance.key_name}"
+
+  vpc_security_group_ids = [
+    "${aws_security_group.all_out_ssh_in.id}"
+  ]
 
   tags {
     Name = "${var.vpc_name}-${var.availability_zone}-NAT"
   }
 }
 
+resource "aws_key_pair" "nat_instance" {
+  key_name_prefix   = "${var.vpc_name}-${var.availability_zone}-NAT"
+  public_key = "${var.bastion_default_public_key}"
+}
 
 resource "aws_route_table" "private_subnet_route" {
 
@@ -62,6 +71,26 @@ resource "aws_route_table" "private_subnet_route" {
     Name = "${var.vpc_name}-${var.availability_zone}-private"
   }
 }
+
+resource "aws_security_group" "all_out_ssh_in" {
+  name        = "all_out_ssh_in"
+  description = "Allow all outbound traffic and SSH inbound"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
+}
+
 
 resource "aws_route_table_association" "private_subnet_to_nat" {
   subnet_id = "${aws_subnet.private_subnet.id}"
