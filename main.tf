@@ -75,12 +75,23 @@ resource "aws_route_table" "private_subnet_route" {
 resource "aws_security_group" "all_out_ssh_in" {
   name_prefix = "all_out_ssh_in"
   description = "Allow all outbound traffic and SSH inbound"
+  vpc_id = "${var.vpc_id}"
 
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [
+      "${var.public_subnet_cidr}",
+      "${var.private_subnet_cidr}"
+    ]
   }
 
   egress {
