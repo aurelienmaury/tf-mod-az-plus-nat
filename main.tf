@@ -73,7 +73,7 @@ resource "aws_route_table" "private_subnet_route" {
 }
 
 resource "aws_security_group" "all_out_ssh_in" {
-  name        = "all_out_ssh_in"
+  name_prefix = "all_out_ssh_in"
   description = "Allow all outbound traffic and SSH inbound"
 
   ingress {
