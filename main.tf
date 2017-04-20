@@ -1,4 +1,3 @@
-
 resource "aws_subnet" "public_subnet" {
   vpc_id = "${var.vpc_id}"
   cidr_block = "${var.public_subnet_cidr}"
@@ -44,7 +43,7 @@ resource "aws_instance" "nat_instance" {
   associate_public_ip_address = true
   key_name = "${aws_key_pair.nat_instance.key_name}"
 
-  vpc_security_group_ids = "${concat([aws_security_group.all_out_ssh_in.id],var.bastion_security_group_id_list)}"
+  vpc_security_group_ids = "${concat(aws_security_group.all_out_ssh_in.id,var.bastion_security_group_id_list)}"
 
   tags {
     Name = "${var.vpc_name}-${var.availability_zone}-NAT"
