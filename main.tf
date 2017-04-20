@@ -36,7 +36,7 @@ data "aws_ami" "debian" {
 
 resource "aws_instance" "nat_instance" {
   ami           = "${data.aws_ami.debian.id}"
-  instance_type = "t2.micro"
+  instance_type = "${var.instance_type}"
 
   subnet_id     = "${aws_subnet.public_subnet.id}"
 
