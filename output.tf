@@ -25,3 +25,7 @@ output "private_subnet_id" {
 output "private_subnet_cidr" {
   value = "${var.private_subnet_cidr}"
 }
+
+output "key_name" {
+  value = "${aws_key_pair.nat_instance.key_name}"
+}
