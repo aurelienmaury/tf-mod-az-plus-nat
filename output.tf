@@ -29,3 +29,7 @@ output "private_subnet_cidr" {
 output "key_name" {
   value = "${aws_key_pair.nat_instance.key_name}"
 }
+
+output "bastion_sg" {
+  value = "${aws_security_group.all_out_ssh_in.id}"
+}
