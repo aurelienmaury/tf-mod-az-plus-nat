@@ -6,7 +6,7 @@ variable "private_subnet_cidr" {}
 variable "public_gateway_route_table_id" {}
 variable "bastion_default_public_key" {}
 variable "instance_type" {
-  default = "t2.micro"
+  default = "m3.medium"
 }
 variable "bastion_security_group_id_list" {
   type = "list"

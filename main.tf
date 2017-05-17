@@ -86,7 +86,6 @@ resource "aws_security_group" "all_out_ssh_in" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = [
-      "${var.public_subnet_cidr}",
       "${var.private_subnet_cidr}"
     ]
   }
