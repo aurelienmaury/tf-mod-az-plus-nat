@@ -45,6 +45,14 @@ resource "aws_instance" "nat_instance" {
 
   vpc_security_group_ids = ["${concat(list(aws_security_group.all_out_ssh_in.id),var.bastion_security_group_id_list)}"]
 
+  user_data = <<EOF
+#cloud-config
+runcmd:
+  - 'wget https://raw.githubusercontent.com/aurelienmaury/ansible-role-seed/master/files/seed-debian-8.sh'
+  - 'chmod u+x ./seed-debian-8.sh'
+  - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
+EOF
+
   tags {
     Name = "${var.vpc_name}-${var.availability_zone}-NAT"
   }

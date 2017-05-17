@@ -33,3 +33,7 @@ output "key_name" {
 output "bastion_sg" {
   value = "${aws_security_group.all_out_ssh_in.id}"
 }
+
+output "bastion_ip" {
+  value = "${aws_instance.nat_instance.public_ip}"
+}
