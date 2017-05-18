@@ -41,6 +41,7 @@ resource "aws_instance" "nat_instance" {
   subnet_id     = "${aws_subnet.public_subnet.id}"
 
   associate_public_ip_address = true
+  source_dest_check = false
   key_name = "${aws_key_pair.nat_instance.key_name}"
 
   vpc_security_group_ids = ["${concat(list(aws_security_group.all_out_ssh_in.id),var.bastion_security_group_id_list)}"]
@@ -52,6 +53,7 @@ runcmd:
   - 'chmod u+x ./seed-debian-8.sh'
   - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
   - 'echo ${var.private_subnet_cidr} > /tmp/private_subnet_cidr'
+  - 'ansible-pull -U https://github.com/aurelienmaury/aws-nat-setup.git'
 EOF
 
   tags {
