@@ -51,6 +51,7 @@ runcmd:
   - 'wget https://raw.githubusercontent.com/aurelienmaury/ansible-role-seed/master/files/seed-debian-8.sh'
   - 'chmod u+x ./seed-debian-8.sh'
   - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
+  - 'echo ${var.private_subnet_cidr} > /root/private_subnet_cidr'
 EOF
 
   tags {
