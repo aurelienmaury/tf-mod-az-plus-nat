@@ -53,7 +53,7 @@ runcmd:
   - 'chmod u+x ./seed-debian-8.sh'
   - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
   - 'echo ${var.private_subnet_cidr} > /tmp/private_subnet_cidr'
-  - 'ansible-pull -U https://github.com/aurelienmaury/aws-nat-setup.git'
+  - 'ansible-pull -U https://github.com/aurelienmaury/aws-nat-setup.git -i localhost,'
 EOF
 
   tags {
