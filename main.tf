@@ -54,6 +54,8 @@ runcmd:
   - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
   - 'echo ${var.private_subnet_cidr} > /tmp/private_subnet_cidr'
   - 'ansible-pull -U https://github.com/aurelienmaury/aws-nat-setup.git -i localhost,'
+  - 'apt-get install sslh -y'
+  - 'service sslh start'
 EOF
 
   tags {
