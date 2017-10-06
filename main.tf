@@ -54,8 +54,6 @@ runcmd:
   - 'for i in 1 2 3 4 5; do ./seed-debian-8.sh && break || sleep 2; done'
   - 'echo ${var.private_subnet_cidr} > /tmp/private_subnet_cidr'
   - 'ansible-pull -U https://github.com/aurelienmaury/aws-nat-setup.git -i localhost,'
-  - 'apt-get install sslh -y'
-  - 'service sslh start'
 EOF
 
   tags {
@@ -90,12 +88,6 @@ resource "aws_security_group" "all_out_ssh_in" {
   ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "TCP"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 443
-    to_port     = 443
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
